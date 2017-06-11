@@ -1,0 +1,152 @@
+# pip install packages
+
+
+pip install django
+pip install djangorestframework
+
+
+#  Run the following command to create a new Django project named gamesapi
+django-admin.py startproject gamesapi
+
+
+#  run the following command to create a new Django app named games within the gamesapi Django project.
+python manage.py startapp games
+
+
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ python manage.py makemigrations games
+Migrations for 'games':
+  games/migrations/0001_initial.py
+    - Create model Game
+
+
+python manage.py migrate
+
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, games, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying games.0001_initial... OK
+  Applying sessions.0001_initial... OK
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$
+
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ sqlite3 db.sqlite3 '.tables'
+auth_group                  django_admin_log
+auth_group_permissions      django_content_type
+auth_permission             django_migrations
+auth_user                   django_session
+auth_user_groups            games_game
+auth_user_user_permissions
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ sqlite3 db.sqlite3 '.schema games_game'
+CREATE TABLE "games_game" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "created" datetime NOT NULL, "name" varchar(200) NOT NULL, "release_date" datetime NOT NULL, "game_category" varchar(200) NOT NULL, "played" bool NOT NULL);
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$
+
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ sqlite3 db.sqlite3 'SELECT * FROM games_game ORDER BY name;'
+
+python manage.py shell
+
+
+from datetime import datetime
+from django.utils import timezone
+from django.utils.six import BytesIO
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from games.models import Game
+from games.serializers import GameSerializer
+
+
+gamedatetime = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
+game1 = Game(name='Smurfs Jungle', release_date=gamedatetime, game_category='2D mobile arcade', played=False)
+game1.save()
+game2 = Game(name='Angry Birds RPG', release_date=gamedatetime, game_category='3D RPG', played=False)
+game2.save()
+
+
+
+>>> game_serializer1 = GameSerializer(game1)
+>>> print(game_serializer1.data)
+{'pk': 1, 'played': False, 'game_category': '2D mobile arcade', 'name': 'Smurfs Jungle', 'release_date': '2017-06-11T05:55:21.008541Z'}
+
+>>> game_serializer2 = GameSerializer(game2)
+>>> print(game_serializer2.data)
+{'pk': 2, 'played': False, 'game_category': '3D RPG', 'name': 'Angry Birds RPG', 'release_date': '2017-06-11T05:55:21.008541Z'}
+>>>
+
+
+>>> renderer = JSONRenderer()
+>>> rendered_game1 = renderer.render(game_serializer1.data)
+>>> rendered_game2 = renderer.render(game_serializer2.data)
+>>> print(rendered_game1)
+b'{"pk":1,"name":"Smurfs Jungle","release_date":"2017-06-11T05:55:21.008541Z","game_category":"2D mobile arcade","played":false}'
+>>> print(rendered_game2)
+b'{"pk":2,"name":"Angry Birds RPG","release_date":"2017-06-11T05:55:21.008541Z","game_category":"3D RPG","played":false}'
+>>>
+
+
+
+json_string_for_new_game = '{"name":"Tomb Raider Extreme Edition","release_date":"2016-05-18T03:02:00.776594Z","game_category":"3D RPG","played":false}'
+json_bytes_for_new_game = bytes(json_string_for_new_game , encoding="UTF-8")
+stream_for_new_game = BytesIO(json_bytes_for_new_game)
+parser = JSONParser()
+parsed_new_game = parser.parse(stream_for_new_game)
+print(parsed_new_game)
+
+
+stream_for_new_game = BytesIO(json_bytes_for_new_game)
+parser = JSONParser()
+parsed_new_game = parser.parse(stream_for_new_game)
+print(parsed_new_game)
+
+
+
+>>> json_string_for_new_game = '{"name":"Tomb Raider Extreme Edition","release_date":"2016-05-18T03:02:00.776594Z","game_category":"3D RPG","played":false}'
+>>> json_bytes_for_new_game = bytes(json_string_for_new_game , encoding="UTF-8")
+>>>
+>>> stream_for_new_game = BytesIO(json_bytes_for_new_game)
+>>> parser = JSONParser()
+>>> parsed_new_game = parser.parse(stream_for_new_game)
+>>> print(parsed_new_game)
+{'release_date': '2016-05-18T03:02:00.776594Z', 'game_category': '3D RPG', 'name': 'Tomb Raider Extreme Edition', 'played': False}
+>>>
+
+
+
+
+>>> new_game_serializer = GameSerializer(data=parsed_new_game)
+>>> if new_game_serializer.is_valid():
+...     new_game = new_game_serializer.save()
+...     print(new_game.name)
+...
+Tomb Raider Extreme Edition
+>>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
