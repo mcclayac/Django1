@@ -137,6 +137,72 @@ Tomb Raider Extreme Edition
 
 
 
+http POST :8000/games/ name='PvZ 3' game_category='2D mobile arcade' played=false release_date='2016-05-18T03:02:00.776594Z'
+
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"PvZ 3", "game_category":"2D mobile arcade", "played": "false", "release_date": "2016-05-18T03:02:00.776594Z"}' :8000/games/
+
+
+{
+    "name": "PvZ 3",
+    "game_category": "2D mobile arcade",
+    "played": false,
+    "release_date": "2016-05-18T03:02:00.776594Z"
+}
+
+
+http PUT :8000/games/4/ name='PvZ 3' game_category='2D mobile arcade' played=true release_date='2016-05-20T03:02:00.776594Z'
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ http PUT :8000/games/4/ name='PvZ 3' game_category='2D mobile arcade' played=true release_date='2016-05-20T03:02:00.776594Z'
+HTTP/1.0 200 OK
+Content-Length: 117
+Content-Type: application/json
+Date: Mon, 12 Jun 2017 00:23:30 GMT
+Server: WSGIServer/0.2 CPython/3.5.2
+X-Frame-Options: SAMEORIGIN
+
+{
+    "game_category": "2D mobile arcade",
+    "name": "PvZ 3",
+    "pk": 4,
+    "played": true,
+    "release_date": "2016-05-20T03:02:00.776594Z"
+}
+
+
+
+http PUT :8000/games/4/ name='PvZ 4'
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ http PUT :8000/games/4/ name='PvZ 4'
+HTTP/1.0 400 Bad Request
+Content-Length: 88
+Content-Type: application/json
+Date: Mon, 12 Jun 2017 00:26:37 GMT
+Server: WSGIServer/0.2 CPython/3.5.2
+X-Frame-Options: SAMEORIGIN
+
+{
+    "game_category": [
+        "This field is required."
+    ],
+    "release_date": [
+        "This field is required."
+    ]
+}
+
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$
+
+
+http DELETE :8000/games/4/
+
+
+
+
+
+/mcclayac/pythoncode/Django1/gamesapi
+
+cd /mcclayac/pythoncode/Django1/gamesapi
+python manage.py runserver 0.0.0.0:8000
+
 
 
 
