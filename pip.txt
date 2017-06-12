@@ -71,7 +71,7 @@ from games.serializers import GameSerializer
 
 
 gamedatetime = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
-game1 = Game(name='Smurfs Jungle', release_date=gamedatetime, game_category='2D mobile arcade', played=False)
+game1 = Game(name='Avengers', release_date=gamedatetime, game_category='2D mobile arcade', played=False)
 game1.save()
 game2 = Game(name='Angry Birds RPG', release_date=gamedatetime, game_category='3D RPG', played=False)
 game2.save()
@@ -208,6 +208,49 @@ python manage.py runserver 0.0.0.0:8000
 
 
 
+(django1) Anthonys-MacBook-Pro:gamesapi anthonymcclay$ python manage.py shell
+Python 3.5.2 (v3.5.2:4def2a2901a5, Jun 26 2016, 10:47:25)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>>
+>>>
+>>> from datetime import datetime
+>>> from django.utils import timezone
+>>> from django.utils.six import BytesIO
+>>> from rest_framework.renderers import JSONRenderer
+>>> from rest_framework.parsers import JSONParser
+>>> from games.models import Game
+>>> from games.serializers import GameSerializer
+>>>
+>>>
+>>> gamedatetime = timezone.make_aware(datetime.now(), timezone.get_current_timezone())
+>>> game1 = Game(name='Avengers', release_date=gamedatetime, game_category='2D mobile arcade', played=False)
+>>> game1.save()
+>>> game_serializer1 = GameSerializer(game1)
+>>> print(game_serializer1.data)
+{'name': 'Avengers', 'played': False, 'id': 10, 'game_category': '2D mobile arcade', 'release_date': '2017-06-12T06:39:08.219190Z'}
+>>> renderer = JSONRenderer()
+>>> rendered_game1 = renderer.render(game_serializer1.data)
+>>> print(rendered_game1)
+b'{"id":10,"name":"Avengers","release_date":"2017-06-12T06:39:08.219190Z","game_category":"2D mobile arcade","played":false}'
+>>>
+
+
+http OPTIONS :8000/games/
+
+
+http -f POST :8000/games/ name='Toy Story 4' game_category='3D RPG' played=false release_date='2016-05-18T03:02:00.776594Z'
+
+
+curl -iX POST -d '{"name":"Toy Story 4", "game_category":"3D RPG", "played":
+    "false", "release_date": "2016-05-18T03:02:00.776594Z"}' :8000/games/
+
+
+curl -iX POST -d '{"name":"Black Panther", "game_category":"3D RPG", "played":"false", "release_date": "2016-05-18T03:02:00.776594Z"}' :8000/games/
+
+(django1) Anthonys-MacBook-Pro:Django1 anthonymcclay$
+http -f POST :8000/games/ name='The Hulk' game_category='3D RPG' played=false release_date='2016-05-18T03:02:00.776594Z'
 
 
 
