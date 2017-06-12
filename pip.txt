@@ -412,4 +412,12 @@ python manage.py migrate
 
 
 
+http GET ':8000/games/?offset=0'
+curl -iX GET ':8000/games/?limit=5&offset=0'
 
+http GET ':8000/games/?limit=5&offset=5'
+curl -iX GET ':8000/games/?limit=5&offset=5'
+
+
+
+http GET ':8000/games/?limit=10000'
