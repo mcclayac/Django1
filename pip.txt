@@ -342,5 +342,48 @@ python manage.py migrate
 
 
 
+#Game Category
+http POST :8000/game-categories/ name='5D mobile arcade'
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"2D mobile arcade"}' :8000/game-categories/
+
+
+#Games
+http POST :8000/games/ name='PvZ Garden Warfare 4' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
+http POST :8000/games/ name='Superman vs Aquaman' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
+
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"PvZ Garden Warfare 4", "game_category":"3D RPG", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
+curl -iX POST -H "Content-Type: application/json" -d '{"name":" Superman vs Aquaman", "game_category":"3D RPG", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
+
+
+http POST :8000/games/ name='Captain America vs Thor' game_category='Virtual reality' played=false release_date='2016-06-21T03:02:00.776594Z'
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"'Captain America vs Thor", "game_category":"Virtual reality", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
+
+http POST :8000/players/ name='Brandon' gender='M'
+http POST :8000/players/ name='Kevin' gender='M'
+
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"Brandon", "gender":"M"}' :8000/players/
+curl -iX POST -H "Content-Type: application/json" -d '{"name":" Kevin", "gender":"M"}' :8000/players/
+
+
+# Score
+http POST :8000/player-scores/ score=35000 score_date='2016-06-21T03:02:00.776594Z' player='Brandon' game='PvZ Garden Warfare 4'
+http POST :8000/player-scores/ score=85125 score_date='2016-06-22T01:02:00.776594Z' player='Brandon' game='PvZ Garden Warfare 4'
+http POST :8000/player-scores/ score=123200 score_date='2016-06-22T03:02:00.776594Z' player='Kevin' game='Superman vs Aquaman'
+http POST :8000/player-scores/ score=11200 score_date='2016-06-22T05:02:00.776594Z' player='Kevin' game='PvZ Garden Warfare 4'
+
+url -iX POST -H "Content-Type: application/json" -d '{"score":"35000", "score_date":"2016-06-21T03:02:00.776594Z", "player":"Brandon", "game":"PvZ Garden Warfare 4"}' :8000/player-scores/
+curl -iX POST -H "Content-Type: application/json" -d '{"score":"85125", "score_date":"2016-06-22T01:02:00.776594Z", "player":"Brandon", "game":"PvZ Garden Warfare 4"}' :8000/player-scores/
+curl -iX POST -H "Content-Type: application/json" -d '{"score":"123200", "score_date":"2016-06-22T03:02:00.776594Z", "player":"Kevin", "game":"'Superman vs Aquaman"}' :8000/player-scores/
+curl -iX POST -H "Content-Type: application/json" -d '{"score":"11200", "score_date":"2016-06-22T05:02:00.776594Z", "player":"Kevin", "game":"PvZ Garden Warfare 4"}' :8000/player-scores/
+
+
+http :8000/players/2/
+curl -iX GET :8000/players/2/
+
+
+
+
+
+
 
 
