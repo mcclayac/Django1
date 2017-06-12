@@ -308,7 +308,8 @@ Running migrations:
 
 psql --username=user_name --dbname=games --command="\dt"
 
-(django1) Anthonys-MacBook-Pro:Django1 anthonymcclay$ psql --username=django --dbname=games --command="\dt"
+(django1) Anthonys-MacBook-Pro:Django1 anthonymcclay$
+
 Password for user django:
                   List of relations
  Schema |            Name            | Type  | Owner
@@ -347,6 +348,9 @@ http POST :8000/game-categories/ name='5D mobile arcade'
 curl -iX POST -H "Content-Type: application/json" -d '{"name":"2D mobile arcade"}' :8000/game-categories/
 
 
+http POST :8000/game-categories/ name='2D mobile arcade'
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"2D mobile arcade"}' :8000/game-categories/
+
 #Games
 http POST :8000/games/ name='PvZ Garden Warfare 4' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
 http POST :8000/games/ name='Superman vs Aquaman' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
@@ -358,6 +362,7 @@ curl -iX POST -H "Content-Type: application/json" -d '{"name":" Superman vs Aqua
 http POST :8000/games/ name='Captain America vs Thor' game_category='Virtual reality' played=false release_date='2016-06-21T03:02:00.776594Z'
 curl -iX POST -H "Content-Type: application/json" -d '{"name":"'Captain America vs Thor", "game_category":"Virtual reality", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
 
+#Players
 http POST :8000/players/ name='Brandon' gender='M'
 http POST :8000/players/ name='Kevin' gender='M'
 
