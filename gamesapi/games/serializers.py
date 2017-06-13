@@ -1,6 +1,6 @@
 """
 Book: Building RESTful Python Web Services
-Chapter 2: Working with class based views and hyperlinked APIs in Django
+Chapter 3: Improving and adding authentication to an API with Django
 Author: Gaston C. Hillar - Twitter.com/gastonhillar
 Publisher: Packt Publishing Ltd. - http://www.packtpub.com
 """
@@ -9,6 +9,27 @@ from games.models import GameCategory
 from games.models import Game
 from games.models import Player
 from games.models import PlayerScore
+from django.contrib.auth.models import User
+
+
+class UserGameSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Game
+        fields = (
+            'url',
+            'name')
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    games = UserGameSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'url',
+            'pk',
+            'username',
+            'games')
 
 
 class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
@@ -27,17 +48,21 @@ class GameCategorySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
+    # We just want to display the owner username (read-only)
+    owner = serializers.ReadOnlyField(source='owner.username')
     # We want to display the game cagory's name instead of the id
     game_category = serializers.SlugRelatedField(queryset=GameCategory.objects.all(), slug_field='name')
 
     class Meta:
         model = Game
+        depth = 4
         fields = (
-            'url',
-            'game_category',
-            'name',
-            'release_date',
-            'played')
+                'url',
+                'owner',
+                'game_category',
+                'name',
+                'release_date',
+                'played')
 
 
 class ScoreSerializer(serializers.HyperlinkedModelSerializer):

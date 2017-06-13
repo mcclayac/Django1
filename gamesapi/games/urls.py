@@ -1,6 +1,6 @@
 """
 Book: Building RESTful Python Web Services
-Chapter 2: Working with class based views and hyperlinked APIs in Django
+Chapter 3: Improving and adding authentication to an API with Django
 Author: Gaston C. Hillar - Twitter.com/gastonhillar
 Publisher: Packt Publishing Ltd. - http://www.packtpub.com
 """
@@ -33,8 +33,13 @@ urlpatterns = [
     url(r'^player-scores/(?P<pk>[0-9]+)/$',
         views.PlayerScoreDetail.as_view(),
         name=views.PlayerScoreDetail.name),
+    url(r'^users/$',
+        views.UserList.as_view(),
+        name=views.UserList.name),
+    url(r'^users/(?P<pk>[0-9]+)/$',
+        views.UserDetail.as_view(),
+        name=views.UserDetail.name),
     url(r'^$',
         views.ApiRoot.as_view(),
         name=views.ApiRoot.name),
 ]
-

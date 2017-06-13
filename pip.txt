@@ -421,3 +421,39 @@ curl -iX GET ':8000/games/?limit=5&offset=5'
 
 
 http GET ':8000/games/?limit=10000'
+
+
+python manage.py createsuperuser
+django
+django
+11javajava
+
+
+
+from django.contrib.auth.models import User
+user = User.objects.create_user('tony', 'anthony.mcclay@gmail.com', '11javajava')
+user.save()
+
+
+
+http POST :8000/games/ name='The Last of Us' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
+curl -iX POST -H "Content-Type: application/json" -d '{"name":"The Last of Us", "game_category":"3D RPG", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
+
+
+http -a superuser:'password' POST :8000/games/ name='The Last of Us' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
+
+http -a django:'11javajava' POST :8000/games/ name='The Last of Us 2' game_category='3D RPG' played=false release_date='2016-06-21T03:02:00.776594Z'
+curl --user superuser:'password' -iX POST -H "Content-Type: application/json" -d '{"name":"The Last of Us", "game_category":"3D RPG", "played": "false", "release_date": "2016-06-21T03:02:00.776594Z"}' :8000/games/
+
+
+http -a kevin:'kevinpassword' PATCH :8000/games/17/ played=true
+curl --user kevin:'kevinpassword' -iX PATCH -H "Content-Type: application/json" -d
+
+
+
+http -a tony:'11javajava' PATCH :8000/games/17/ played=true
+
+
+
+
+
