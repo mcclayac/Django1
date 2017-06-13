@@ -455,5 +455,50 @@ http -a tony:'11javajava' PATCH :8000/games/17/ played=true
 
 
 
+# bash shel command
+for i in {1..6}; do http :8000/player-scores/; done;
+
+
+http -a superuser:'password' :8000/player-scores/
+
+http -a django:'11javajava' :8000/player-scores/
+
+
+for i in {1..6}; do http -a django:'11javajava' :8000/player-scores/; done;
+
+
+
+http :8000/game-categories/
+for i in {1..30}; do http :8000/game-categories/; done;
+
+
+http :8000/game-categories/?name=3D+RPG
+
+
+http ':8000/games/?game_category=3&played=True&ordering=-release_date'
+
+http ':8000/games/?game_category=3&played=True&ordering=-release_date'
+
+
+http ':8000/player-scores/?player_name=django&game_name=Superman+vs+Aquaman'
+
+http ':8000/player-scores/?player_name=Kevin&game_name=Superman+vs+Aquaman'
+
+http ':8000/player-scores/?score=&from_score_date=2016-06-01&to_score_date=2016-06-28&min_score=30000&max_score=150000&ordering=-score_date'
+
+pip install coverage
+
+
+django-nose
+
+
+python manage.py test -v 2
+
+coverage report -m
+
+
+
+
+
 
 

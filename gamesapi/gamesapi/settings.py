@@ -31,7 +31,7 @@ SECRET_KEY = 'z-dpgdh7nm4_*bg5^4as$_4q#a-ikk_#*jmth-650(9y_p&-et'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['[::1]','192.168.0.5','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['[::1]','192.168.0.5','localhost','127.0.0.1','10.23.71.184']
 
 
 # Application definition
@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     'rest_framework',
     # Games application
     'games.apps.GamesConfig',
+    # Crispy forms
+    'crispy_forms',
+    'django_filters',
+    # Django nose
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -143,9 +148,33 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
     'games.pagination.LimitOffsetPaginationWithMaxLimit',
     'PAGE_SIZE': 5,
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+        ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        )
+        ),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/hour',
+        'user': '20/hour',
+        'game-categories': '30/hour',
+    }
 }
 
+# We want to use nose to run all the tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# We want nose to measure coverage on the games app
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-erase',
+    '--cover-inclusive',
+    '--cover-package=games',
+]
